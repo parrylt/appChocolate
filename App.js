@@ -7,8 +7,6 @@ import {
   TouchableOpacity,
   ImageBackground,
   ScrollView,
-  Modal,
-  TouchableWithoutFeedback,
 } from 'react-native';
 import { useFonts, Oswald_700Bold } from '@expo-google-fonts/oswald';
 
@@ -17,31 +15,20 @@ export default function App() {
     Oswald_700Bold,
   });
 
-  const [modalVisivel, setModalVisivel] = useState(false);
-  const [escolheChocolate, setEscolheChocolate] = useState(null);
+  const [choco1Visivel, setchoco1Visivel] = useState(false);
+  const [choco2Visivel, setchoco2Visivel] = useState(false);
+  const [choco3Visivel, setchoco3Visivel] = useState(false);
 
-  const chocolates = [
-    {
-      nome: 'Lacta Sonho de Valsa',
-      comentario: 'Esse eu gosto demais, muito foda',
-    },
-    {
-      nome: 'Kit Kat Chocolate Branco',
-      comentario: 'Esse também, mas tá em segundo lugar, foda pra caramba',
-    },
-    {
-      nome: 'Milka Raspberry Creme',
-      comentario: 'Esse é foda sem igual, mas muito caro',
-    },
-  ];
-
-  const abreModal = (chocolate) => {
-    setEscolheChocolate(chocolate);
-    setModalVisivel(true);
+  const toggleChoco1 = () => {
+    setchoco1Visivel((prevState) => !prevState);
   };
 
-  const fechaModal = () => {
-    setModalVisivel(false);
+  const toggleChoco2 = () => {
+    setchoco2Visivel((prevState) => !prevState);
+  };
+
+  const toggleChoco3 = () => {
+    setchoco2Visivel((prevState) => !prevState);
   };
 
   if (!fontsLoaded && !fontError) {
@@ -62,11 +49,8 @@ export default function App() {
       </View>
 
       <ScrollView>
-        {chocolates.map((chocolate, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.container1}
-            onPress={() => abreModal(chocolate)}>
+        {!choco1Visivel && (
+          <TouchableOpacity onPress={toggleChoco1}>
             <View style={styles.container1}>
               <Text style={styles.nome}>
                 {'\n'}Lacta Sonho de Valsa{'\n'}
@@ -80,7 +64,29 @@ export default function App() {
                 {'\n'}Foda demais{'\n'}
               </Text>
             </View>
+          </TouchableOpacity>
+        )}
 
+        {choco1Visivel && (
+          <TouchableOpacity onPress={toggleChoco1}>
+            <View style={styles.container1}>
+              <Text style={styles.nome}>
+                {'\n'}Lacta Sonho de Valsa{'\n'}
+              </Text>
+              <Image
+                source={require('./images/lactaSonho.jpg')}
+                style={styles.foto}
+                resizeMode="contain"
+              />
+              <Text style={styles.comentario}>
+                {'\n'}Foda demais{'\n'}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
+
+        {!choco2Visivel && (
+          <TouchableOpacity onPress={toggleChoco2}>
             <View style={styles.container1}>
               <Text style={styles.nome}>
                 {'\n'}Kit Kat Chocolate Branco{'\n'}
@@ -94,7 +100,27 @@ export default function App() {
                 {'\n'}Muito foda{'\n'}
               </Text>
             </View>
+          </TouchableOpacity>
+        )}
 
+        {choco2Visivel && (
+          <View style={styles.container1}>
+            <Text style={styles.nome}>
+              {'\n'}Kit Kat Chocolate Branco{'\n'}
+            </Text>
+            <Image
+              source={require('./images/kitkat.jpg')}
+              style={styles.foto}
+              resizeMode="contain"
+            />
+            <Text style={styles.comentario}>
+              {'\n'}Muito foda{'\n'}
+            </Text>
+          </View>
+        )}
+
+        {!choco3Visivel && (
+          <TouchableOpacity onPress={toggleChoco3}>
             <View style={styles.container1}>
               <Text style={styles.nome}>
                 {'\n'}Milka Raspberry Creme{'\n'}
@@ -109,23 +135,50 @@ export default function App() {
               </Text>
             </View>
           </TouchableOpacity>
-        ))}
+        )}
+
+        {choco1Visivel && (
+          <View style={styles.container2}>
+            <Text style={styles.comentario}>
+              {'\n'}Esse é muito forte{'\n'}
+            </Text>
+
+            <TouchableOpacity
+              onPress={() => setchoco1Visivel(false)}
+              style={styles.containerBotaoFechar}>
+              <Text style={styles.textoBotaoFechar}>Fechar</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {choco2Visivel && (
+          <View style={styles.container3}>
+            <Text style={styles.comentario}>
+              {'\n'}Esse é sacanagem de bom{'\n'}
+            </Text>
+
+            <TouchableOpacity
+              onPress={() => setchoco2Visivel(false)}
+              style={styles.containerBotaoFechar}>
+              <Text style={styles.textoBotaoFechar}>Fechar</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {choco3Visivel && (
+          <View style={styles.container4}>
+            <Text style={styles.comentario}>
+              {'\n'}Esse é gostoso demais, mas é caro{'\n'}
+            </Text>
+
+            <TouchableOpacity
+              onPress={() => setchoco3Visivel(false)}
+              style={styles.containerBotaoFechar}>
+              <Text style={styles.textoBotaoFechar}>Fechar</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </ScrollView>
-
-      <Modal
-        transparent={true}
-        animationType="slide"
-        visible={modalVisivel}
-        onRequestClose={fechaModal}>
-        <TouchableWithoutFeedback onPress={fechaModal}>
-          <View style={styles.modalTela} />
-        </TouchableWithoutFeedback>
-
-        <View style={styles.conteudoModal}>
-          <Text style={styles.nome}>{escolheChocolate?.nome}</Text>
-          <Text style={styles.comentario}>{escolheChocolate?.comentario}</Text>
-        </View>
-      </Modal>
     </View>
   );
 }
@@ -200,17 +253,51 @@ const styles = StyleSheet.create({
     color: 'black',
     fontFamily: 'Oswald_700Bold',
   },
-  modalTela: {
+  container2: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 70,
+    width: 280,
+    bottom: 1300,
+    marginLeft: 30,
+    backgroundColor: 'rgba(15, 130, 98, 0.9)',
+    position: 'relative',
+    zIndex: 3,
   },
-  conteudoModal: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
-    margin: 50,
-    alignItems: 'center',
+  container3: {
+    flex: 1,
+    padding: 70,
+    width: 280,
+    bottom: 900,
+    marginLeft: 30,
+    backgroundColor: 'rgba(15, 130, 98, 0.9)',
+    position: 'relative',
+    zIndex: 3,
+  },
+  container4: {
+    flex: 1,
+    padding: 70,
+    width: 280,
+    bottom: 500,
+    marginLeft: 30,
+    backgroundColor: 'rgba(15, 130, 98, 0.9)',
+    position: 'relative',
+    zIndex: 3,
+  },
+  containerBotaoFechar: {
+    position: 'absolute',
+    bottom: 20,
+    left: 10,
+    backgroundColor: 'red',
     justifyContent: 'center',
-    flex: 1
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 200,
+    width: 75,
+    height: 75,
+    zIndex: 2,
+  },
+  textoBotaoFechar: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
