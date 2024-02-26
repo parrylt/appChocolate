@@ -28,7 +28,7 @@ export default function App() {
   };
 
   const toggleChoco3 = () => {
-    setchoco2Visivel((prevState) => !prevState);
+    setchoco3Visivel((prevState) => !prevState);
   };
 
   if (!fontsLoaded && !fontError) {
@@ -66,7 +66,6 @@ export default function App() {
             </View>
           </TouchableOpacity>
         )}
-
         {choco1Visivel && (
           <TouchableOpacity onPress={toggleChoco1}>
             <View style={styles.container1}>
@@ -102,7 +101,6 @@ export default function App() {
             </View>
           </TouchableOpacity>
         )}
-
         {choco2Visivel && (
           <View style={styles.container1}>
             <Text style={styles.nome}>
@@ -120,6 +118,23 @@ export default function App() {
         )}
 
         {!choco3Visivel && (
+          <TouchableOpacity onPress={toggleChoco3}>
+            <View style={styles.container1}>
+              <Text style={styles.nome}>
+                {'\n'}Milka Raspberry Creme{'\n'}
+              </Text>
+              <Image
+                source={require('./images/milka.jpg')}
+                style={styles.foto}
+                resizeMode="contain"
+              />
+              <Text style={styles.comentario}>
+                {'\n'}Foda sem palavras{'\n'}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
+        {choco3Visivel && (
           <TouchableOpacity onPress={toggleChoco3}>
             <View style={styles.container1}>
               <Text style={styles.nome}>
@@ -277,7 +292,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 70,
     width: 280,
-    bottom: 500,
+    bottom: 400,
     marginLeft: 30,
     backgroundColor: 'rgba(15, 130, 98, 0.9)',
     position: 'relative',
